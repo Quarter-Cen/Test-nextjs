@@ -3,14 +3,12 @@
   gather_facts: true
   remote_user: root
   tasks:
-    # First check and install curl
     - name: Install curl
       apt:
         name: curl
         state: present
         update_cache: yes
 
-    # Install Node.js and npm using nvm (more reliable method)
     - name: Download nvm
       shell: >
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
@@ -26,20 +24,6 @@
       args:
         executable: /bin/bash
 
-    # Verify npm installation
-    - name: Check npm version
-      shell: |
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        npm --version
-      register: npm_version
-      args:
-        executable: /bin/bash
-
-    - debug:
-        var: npm_version.stdout
-
-    # Continue with your build process
     - name: Install Node.js dependencies
       shell: |
         export NVM_DIR="$HOME/.nvm"
@@ -61,7 +45,7 @@
 
     - name: Building Docker Image
       docker_image:
-        name: 66022365nextjs:latest
+        name: 66022365:latest
         source: build
         build:
           path: ~/66022365nextjs
