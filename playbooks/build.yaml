@@ -1,0 +1,29 @@
+- name: Build and Dockerize Next.js Application
+  hosts: dockerservers
+  gather_facts: false
+  remote_user: root
+  tasks:
+    - name: Install Node.js dependencies
+      npm:
+        path: ~/66022365nextjs  # Your Next.js project path
+        state: present
+        ci: yes  # Uses npm ci for clean install
+
+    - name: Build Next.js application
+      command:
+        cmd: npm run build
+        chdir: ~/66022365nextjs
+      environment:
+        NODE_ENV: production
+        NEXT_TELEMETRY_DISABLED: 1
+
+    - name: Building Docker Image
+      docker_image:
+        name: 66022365nextjs:latest
+        source: build
+        build:
+          path: ~/66022365nextjss
+          args:
+            NODE_ENV: production
+        state: present
+        force_source: true
