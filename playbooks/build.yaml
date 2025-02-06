@@ -22,7 +22,7 @@
         name: 66022365nextjs:latest
         source: build
         build:
-          path: ~/66022365nextjss
+          path: ~/66022365nextjs
           args:
             NODE_ENV: production
         state: present
